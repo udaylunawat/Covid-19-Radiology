@@ -1,0 +1,6 @@
+kaggle
+tensorflow
+seaborn
+pyngrok
+sklearn
+streamlit-nightly
