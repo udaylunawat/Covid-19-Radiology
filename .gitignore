@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# COvid-19 Project
+# Covid-19 Project
 /data
+kaggle.json
