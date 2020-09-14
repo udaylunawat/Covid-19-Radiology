@@ -9,7 +9,7 @@ BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
 PYTHON_INTERPRETER = python3
 
-DATA_SOURCE = https://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data
+MODEL = https://storage.googleapis.com/dracarys3_bucket/covid/base_model_covid.h5
 ifeq (,$(shell which conda))
 HAS_CONDA=False
 else
@@ -27,13 +27,21 @@ requirements:
 
 ## Make Dataset
 ETL: requirements data train
-data: directory_setup download_data
+data: directory_setup ct_scans_download corona_data
 
 directory_setup:
-	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed
+	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed output/models
 
-download_data:
-	wget -c $(DATA_SOURCE) -O data/0_raw/sonar.all-data.csv -q --show-progress
+ct_scans_download:
+	kaggle datasets download tawsifurrahman/covid19-radiography-database
+	unzip covid19-radiography-database.zip -d data/0_raw/
+
+corona_data:
+	kaggle datasets download imdevskp/corona-virus-report
+	unzip corona-virus-report.zip -d data/0_raw
+
+model_download:
+	wget -c $(MODEL) -O output/models/base_model_covid.h5 -q --show-progress
 
 ## Train Model
 train: data
