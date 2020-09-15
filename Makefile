@@ -30,7 +30,7 @@ ETL: requirements data train
 data: directory_setup ct_scans_download corona_data
 
 directory_setup:
-	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed output/models
+	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed output/models/snapshots output/models/inference
 
 ct_scans_download:
 	kaggle datasets download tawsifurrahman/covid19-radiography-database
@@ -43,7 +43,7 @@ corona_data:
 	unzip data/1_external/corona-virus-report.zip -d data/0_raw
 
 model_download:
-	wget -c $(MODEL) -O output/models/base_model_covid.h5 -q --show-progress
+	wget -c $(MODEL) -O output/models/inference/base_model_covid.h5 -q --show-progress
 
 ## Train Model
 train: data

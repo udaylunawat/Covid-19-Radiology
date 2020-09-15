@@ -72,7 +72,7 @@ class_dict = {0:'COVID19',
               2:'PNEUMONIA'}
 
 if choice == "Detector":
-    loaded_model = tf.keras.models.load_model("output/models/base_model_covid.h5")
+    loaded_model = tf.keras.models.load_model("output/models/inference/base_model_covid.h5")
     st.write("## Upload your own image")
 
     # placeholders
