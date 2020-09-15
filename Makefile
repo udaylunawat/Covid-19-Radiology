@@ -7,7 +7,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-PYTHON_INTERPRETER = python3
+PYTHON_INTERPRETER = python
 
 MODEL = https://storage.googleapis.com/dracarys3_bucket/covid/base_model_covid.h5
 ifeq (,$(shell which conda))
