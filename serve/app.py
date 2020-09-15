@@ -1,5 +1,5 @@
 """Covid Radiology
-- a
+- Project Description
 - b
 - c
 - d
@@ -11,7 +11,6 @@ from streamlit import caching
 st.beta_set_page_config(page_title="Ex-stream-ly Cool App", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
-import os
 from os import listdir
 from os.path import isfile, join
 import cv2
@@ -63,7 +62,7 @@ st.sidebar.markdown("## COVID-19 Classifier")
 st.sidebar.markdown("Made with :heart: by [XYZ](https://www.github.com)")
 
 crop, image = None, None
-img_size, crop_size = 600, 400
+img_size = 600
 
 activities = ["Data Visualization","Detector"]
 choice = st.sidebar.radio("Go to", activities)
@@ -71,8 +70,6 @@ choice = st.sidebar.radio("Go to", activities)
 class_dict = {0:'COVID19',
               1:'NORMAL',
               2:'PNEUMONIA'}
-
-crop, image = None, None
 
 if choice == "Detector":
     loaded_model = tf.keras.models.load_model("output/models/base_model_covid.h5")
