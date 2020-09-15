@@ -132,11 +132,11 @@ if choice == "Detector":
             st.success('Prediction: '+pred_class)
 
 elif choice == "Data Visualization":
-    full_table = pd.read_csv('data/covid_19_clean_complete.csv')
+    full_table = pd.read_csv('data/0_raw/covid_19_clean_complete.csv')
     # st.title("Full data")
     # st.write(full_table)
     
-    country_wise = pd.read_csv('data/country_wise_latest.csv')
+    country_wise = pd.read_csv('data/0_raw/country_wise_latest.csv')
     country_wise = country_wise.replace('', np.nan).fillna(0)
     st.title("Country wise data")
     st.write(country_wise)
