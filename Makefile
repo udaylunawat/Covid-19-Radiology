@@ -34,11 +34,13 @@ directory_setup:
 
 ct_scans_download:
 	kaggle datasets download tawsifurrahman/covid19-radiography-database
-	unzip covid19-radiography-database.zip -d data/0_raw/
+	mv covid19-radiography-database.zip data/1_external/
+	unzip data/1_external/covid19-radiography-database.zip -d data/0_raw/
 
 corona_data:
 	kaggle datasets download imdevskp/corona-virus-report
-	unzip corona-virus-report.zip -d data/0_raw
+	mv corona-virus-report.zip data/1_external/
+	unzip data/1_external/corona-virus-report.zip -d data/0_raw
 
 model_download:
 	wget -c $(MODEL) -O output/models/base_model_covid.h5 -q --show-progress
