@@ -131,3 +131,4 @@ dmypy.json
 # Covid-19 Project
 /data
 kaggle.json
+/output/models
