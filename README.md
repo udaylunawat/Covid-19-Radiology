@@ -82,8 +82,6 @@ Directory Tree
     │   │
     │   ├── data                          <- Scripts to download or generate data
     │   │   ├── make_dataset.py
-    │   │   ├── generate_pascalvoc.py
-    │   │   ├── generate_annotations.py
     │   │   └── preprocess.py    
     │   │
     │   ├── models                        <- Scripts to train models and then use trained models to make
