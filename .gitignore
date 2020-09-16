@@ -129,6 +129,11 @@ dmypy.json
 .pyre/
 
 # Covid-19 Project
-/data
+
+!/data/sample_images/*
+/data/0_raw/
+/data/1_external/
+/data/2_interim/
+/data/3_processed/
 kaggle.json
 /output/models
