@@ -74,8 +74,7 @@ Directory Tree
     │   │   ├── snapshots                 <- Saving training snapshots.
     │   │   ├── inference                 <- Converted trained model to an inference model.
     │   │   └── TrainingOutput            <- Output logs
-    │   └── reports                       <- Generated analyses as HTML, PDF, LaTeX, etc.
-    │       └── figures                   <- Generated graphics and figures to be used in reporting
+    │   └── figures                       <- Generated graphics and figures to be used in reporting
     │
     ├── src                               <- Source code for use in this project.
     │   ├── __init__.py                   <- Makes src a Python module
