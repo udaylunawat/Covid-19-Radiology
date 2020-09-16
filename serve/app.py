@@ -20,6 +20,8 @@ import time
 import random
 import pandas as pd
 import tensorflow as tf
+import requests
+import io
 
 # basic visualization package
 import matplotlib.pyplot as plt
@@ -40,7 +42,7 @@ def plot_map(df, col, pal):
     df = df[df[col]>0]
     fig = px.choropleth(df, locations="Country/Region", locationmode='country names', 
                   color=col, hover_name="Country/Region", 
-                  title=col, hover_data=[col], color_continuous_scale=pal)
+                  title=col, hover_data=[col], color_continuous_scale="ylgnbu")
     return fig
 #================================= Functions =================================
 
@@ -64,7 +66,7 @@ st.sidebar.markdown("Made with :heart: by [XYZ](https://www.github.com)")
 crop, image = None, None
 img_size = 600
 
-activities = ["Data Visualization","Detector"]
+activities = ["Data Visualization","Detector","Performance"]
 choice = st.sidebar.radio("Go to", activities)
 
 class_dict = {0:'COVID19',
@@ -81,8 +83,9 @@ if choice == "Detector":
 
     predictor = st.checkbox("Make a Prediction 🔥")
 
-    samplefiles = sorted([sample for sample in listdir('sample_images')])
-    radio_list = ['Choose existing', 'Upload']
+    sample_dir = 'data/sample_images/' 
+    samplefiles = sorted([sample for sample in listdir(sample_dir)])
+    upload_options = ['Choose existing', 'Upload','URL']
 
     query_params = st.experimental_get_query_params()
     # Query parameters are returned as a list to support multiselect.
@@ -90,18 +93,18 @@ if choice == "Detector":
     # Setting default page as Upload page, checkout the url too. The page state can be shared now!
     default = 1
 
-    activity = choose.radio("Choose existing sample or try your own:", radio_list, index=default)
+    activity = choose.selectbox("Choose existing sample or try your own:", upload_options, index=default)
 
     if activity:
-        st.experimental_set_query_params(activity=radio_list.index(activity))
+        st.experimental_set_query_params(activity=upload_options.index(activity))
         if activity == 'Choose existing':
             selected_sample = upload.selectbox("Pick from existing samples", (samplefiles))
-            image = Image.open('sample_images/'+selected_sample)
-            IMAGE_PATH = 'sample_images/'+selected_sample
-            image = Image.open('sample_images/'+selected_sample)
+            image = Image.open(sample_dir + selected_sample)
+            IMAGE_PATH = sample_dir + selected_sample
+            image = Image.open(sample_dir + selected_sample)
             img_file_buffer = None
 
-        else:
+        elif activity == 'Upload':
             # You can specify more file types below if you want
             img_file_buffer = upload.file_uploader("Upload image", type=['jpeg', 'png', 'jpg', 'webp'], multiple_files = True)
 
@@ -112,6 +115,15 @@ if choice == "Detector":
                 pass
 
             selected_sample = None
+        elif activity == 'URL':
+            IMAGE_PATH = upload.text_input('Paste URL to Image:')
+            try:
+                response = requests.get(IMAGE_PATH)
+                image_bytes = io.BytesIO(response.content)
+                image = Image.open(image_bytes)
+            except:
+                pass
+            selected_sample, img_file_buffer = None, None
 
     if image:
         
@@ -142,3 +154,9 @@ elif choice == "Data Visualization":
     st.write(plot_map(country_wise, 'Deaths', 'matter'))
     st.write(plot_map(country_wise, 'Deaths / 100 Cases', 'matter'))
 
+elif choice == "Performance":
+    st.image('output/figures/pred.png')
+    st.image('output/figures/a_and_l.png')
+    st.image('output/figures/accuracy.png')
+    st.image('output/figures/loss.png')
+    st.image('output/figures/cm.png')
