@@ -8,7 +8,7 @@
 # streamlit configurations and options
 import streamlit as st
 from streamlit import caching
-st.beta_set_page_config(page_title="Ex-stream-ly Cool App", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
+st.beta_set_page_config(page_title="Covid-19", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 from os import listdir
@@ -20,11 +20,16 @@ import time
 import random
 import pandas as pd
 import tensorflow as tf
+tf.keras.backend.clear_session()
+
 import requests
 import io
 
+from sklearn.metrics import confusion_matrix
+
 # basic visualization package
 import matplotlib.pyplot as plt
+
 # advanced ploting
 import seaborn as sns
 
@@ -33,10 +38,19 @@ import plotly.express as px
 import plotly.graph_objs as go
 # import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
+
+from src.visualization.visualize import metrics_plotly
 #============================ About ==========================
 def about():
 
-    st.info("Built with Streamlit by [XYZ 😎](https://github.com)")
+    st.info("Built with Streamlit by [Uday 😎](https://github.com)")
+
+#================================= Functions =================================
+def streamlit_preview_image(image):
+    st.sidebar.image(
+                image,
+                use_column_width=True,
+                caption = "Original Image")
 
 def plot_map(df, col, pal):
     df = df[df[col]>0]
@@ -44,37 +58,23 @@ def plot_map(df, col, pal):
                   color=col, hover_name="Country/Region", 
                   title=col, hover_data=[col], color_continuous_scale="ylgnbu")
     return fig
-#================================= Functions =================================
-
-def streamlit_preview_image(image):
-    st.sidebar.image(
-                image,
-                use_column_width=True,
-                caption = "Original Image")
-
-def streamlit_output_image(image, caption):
-    st.image(image,
-            use_column_width=True,
-            caption = caption)
-
-
 #======================== Time To See The Magic ===========================
 
 st.sidebar.markdown("## COVID-19 Classifier")
 st.sidebar.markdown("Made with :heart: by [XYZ](https://www.github.com)")
 
-crop, image = None, None
+image = None, None
 img_size = 600
 
-activities = ["Data Visualization","Detector","Performance"]
+activities = ["Data Visualization","Detector","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
 class_dict = {0:'COVID19',
               1:'NORMAL',
               2:'PNEUMONIA'}
-
+# loaded_model = tf.keras.models.load_model("output/models/inference/base_model_covid.h5")
 if choice == "Detector":
-    loaded_model = tf.keras.models.load_model("output/models/inference/base_model_covid.h5")
+
     st.write("## Upload your own image")
 
     # placeholders
@@ -91,7 +91,7 @@ if choice == "Detector":
     # Query parameters are returned as a list to support multiselect.
     # Get the second item (upload) in the list if the query parameter exists.
     # Setting default page as Upload page, checkout the url too. The page state can be shared now!
-    default = 1
+    default = 0
 
     activity = choose.selectbox("Choose existing sample or try your own:", upload_options, index=default)
 
@@ -105,6 +105,8 @@ if choice == "Detector":
             img_file_buffer = None
 
         elif activity == 'Upload':
+            image = None
+
             # You can specify more file types below if you want
             img_file_buffer = upload.file_uploader("Upload image", type=['jpeg', 'png', 'jpg', 'webp'], multiple_files = True)
 
@@ -115,8 +117,10 @@ if choice == "Detector":
                 pass
 
             selected_sample = None
+
         elif activity == 'URL':
-            IMAGE_PATH = upload.text_input('Paste URL to Image:')
+            image = None
+            IMAGE_PATH = upload.text_input('URL to Image Address:')
             try:
                 response = requests.get(IMAGE_PATH)
                 image_bytes = io.BytesIO(response.content)
@@ -141,6 +145,7 @@ if choice == "Detector":
             st.success('Prediction: '+pred_class)
 
 elif choice == "Data Visualization":
+
     full_table = pd.read_csv('data/0_raw/covid_19_clean_complete.csv')
     # st.title("Full data")
     # st.write(full_table)
@@ -153,10 +158,15 @@ elif choice == "Data Visualization":
     st.write(plot_map(country_wise, 'Confirmed', 'matter'))
     st.write(plot_map(country_wise, 'Deaths', 'matter'))
     st.write(plot_map(country_wise, 'Deaths / 100 Cases', 'matter'))
-
-elif choice == "Performance":
     st.image('output/figures/pred.png')
-    st.image('output/figures/a_and_l.png')
-    st.image('output/figures/accuracy.png')
-    st.image('output/figures/loss.png')
+
+elif choice == "Performance Metrics":
+    st.write(metrics_plotly(metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
+    st.write(metrics_plotly(metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
+    st.write(metrics_plotly(metrics = ['loss','val_loss'], title = 'Loss Plot'))
     st.image('output/figures/cm.png')
+
+
+elif choice == "About":
+    about()
+
