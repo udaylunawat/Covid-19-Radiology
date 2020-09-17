@@ -1,8 +1,8 @@
 """Covid Radiology
 - Project Description
-- b
-- c
-- d
+- Covid Description
+- DL Description
+- VGG16 Description
 """
 
 # streamlit configurations and options
@@ -18,6 +18,7 @@ import numpy as np
 from PIL import Image
 import time
 import random
+import requests
 import pandas as pd
 import tensorflow as tf
 tf.keras.backend.clear_session()
@@ -39,33 +40,42 @@ import plotly.graph_objs as go
 # import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 
-from src.visualization.visualize import metrics_plotly
+from src.visualization.visualize import metrics_plotly, plot_map
+from src.data.preprocess import covid_stats
 #============================ About ==========================
 def about():
 
-    st.info("Built with Streamlit by [Uday 😎](https://github.com)")
+    st.info("Built with Streamlit by [Uday 😎](http://udaylunawat.github.io/)")
 
 #================================= Functions =================================
+# @st.cache(suppress_st_warning=True)
 def streamlit_preview_image(image):
-    st.sidebar.image(
+    st.image(
                 image,
-                use_column_width=True,
-                caption = "Original Image")
+                width =img_size,
+                caption = "Image Preview")
 
-def plot_map(df, col, pal):
-    df = df[df[col]>0]
-    fig = px.choropleth(df, locations="Country/Region", locationmode='country names', 
-                  color=col, hover_name="Country/Region", 
-                  title=col, hover_data=[col], color_continuous_scale="ylgnbu")
-    return fig
+
+
 #======================== Time To See The Magic ===========================
 
-st.sidebar.markdown("## COVID-19 Classifier")
-st.sidebar.markdown("Made with :heart: by [XYZ](https://www.github.com)")
+# https://rapidapi.com/astsiatsko/api/coronavirus-monitor
+url = "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php"
+
+headers = {
+    'x-rapidapi-host': "coronavirus-monitor.p.rapidapi.com",
+    'x-rapidapi-key': "dd8d4e05e8mshc5ab62dcd8a5f08p14b028jsna2726a63a74d"
+    }
+
+response = requests.request("GET", url, headers=headers)
+
+
+st.sidebar.markdown("## COVID-19 Radiology")
+st.sidebar.markdown("Made with :heart: by [Uday Lunawat](http://udaylunawat.github.io/)")
 
 image = None, None
-img_size = 600
-
+img_size = 400
+st.sidebar.info(__doc__)
 activities = ["Data Visualization","Detector","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
@@ -81,7 +91,7 @@ if choice == "Detector":
     choose = st.empty() 
     upload = st.empty()
 
-    predictor = st.checkbox("Make a Prediction 🔥")
+    predictor = st.button("Make a Prediction 🔥")
 
     sample_dir = 'data/sample_images/' 
     samplefiles = sorted([sample for sample in listdir(sample_dir)])
@@ -131,7 +141,7 @@ if choice == "Detector":
 
     if image:
         
-        st.sidebar.markdown("## Preview Of Selected Image! 👀")
+        st.markdown("## Preview Of Selected Image! 👀")
         streamlit_preview_image(image)
 
         if predictor:
@@ -142,30 +152,27 @@ if choice == "Detector":
 
             pred_class = class_dict[pred_class]
 
-            st.success('Prediction: '+pred_class)
+            st.sidebar.success('Prediction: '+pred_class)
 
 elif choice == "Data Visualization":
 
-    full_table = pd.read_csv('data/0_raw/covid_19_clean_complete.csv')
-    # st.title("Full data")
-    # st.write(full_table)
-    
-    country_wise = pd.read_csv('data/0_raw/country_wise_latest.csv')
-    country_wise = country_wise.replace('', np.nan).fillna(0)
+    country_wise = covid_stats(response)
     st.title("Country wise data")
     st.write(country_wise)
 
-    st.write(plot_map(country_wise, 'Confirmed', 'matter'))
-    st.write(plot_map(country_wise, 'Deaths', 'matter'))
-    st.write(plot_map(country_wise, 'Deaths / 100 Cases', 'matter'))
-    st.image('output/figures/pred.png')
+    st.write(plot_map(country_wise, 'cases'))
+    st.write(plot_map(country_wise, 'deaths'))
+    st.write(plot_map(country_wise, 'deaths_per_1m_population'))
+
+
 
 elif choice == "Performance Metrics":
     st.write(metrics_plotly(metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
     st.write(metrics_plotly(metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
     st.write(metrics_plotly(metrics = ['loss','val_loss'], title = 'Loss Plot'))
     st.image('output/figures/cm.png')
-
+    st.sidebar.markdown("### Prediction Preview")
+    st.sidebar.image('output/figures/pred.png', width = 300)
 
 elif choice == "About":
     about()
