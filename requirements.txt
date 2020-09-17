@@ -1,6 +1,7 @@
 # local package
 -e .
 
+opencv-python
 kaggle
 tensorflow
 seaborn
