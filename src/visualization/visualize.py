@@ -1,6 +1,8 @@
 import os
-import plotly.graph_objects as go
 import joblib
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 import plotly.figure_factory as ff
 
 covid_image_dir = 'data/0_raw/COVID-19 Radiography Database/COVID-19'
@@ -107,4 +109,15 @@ def plotly_cm(cm):
     # add colorbar
     fig['data'][0]['showscale'] = True
 
+    return fig
+
+def plot_map(df, col):
+    # df = df[df[col]>0]
+    fig = px.choropleth(df, locations="country_name", locationmode='country names', 
+                  color=np.log10(df[col]), hover_name="country_name", 
+                  title=col, hover_data=[col], color_continuous_scale=px.colors.sequential.Plasma)
+    fig.update_layout(coloraxis_colorbar=dict(
+    title=col,
+    tickvals=[2,3,4,5,6,7],
+    ticktext=["100","1K","10K", "100K","1M", "10M"]))
     return fig
