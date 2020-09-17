@@ -1,9 +1,27 @@
 import os
 import plotly.graph_objects as go
 import joblib
+import plotly.figure_factory as ff
 
 covid_image_dir = 'data/0_raw/COVID-19 Radiography Database/COVID-19'
 # COVID19images = os.listdir(covid_image_dir)
+
+class_dict = {0:'COVID19',
+              1:'NORMAL',
+              2:'PNEUMONIA'}
+
+def predict_label(file_path):
+    image = cv2.imread(file_path)
+    test_image = cv2.resize(image, (224,224),interpolation=cv2.INTER_NEAREST)
+    # plt.imshow(test_image)
+    test_image = np.expand_dims(test_image,axis=0)
+    probs = model.predict(test_image)
+    pred_class = np.argmax(probs)
+
+    pred_class = class_dict[pred_class]
+
+    # print('prediction: ',pred_class)
+    return image, pred_class, probs
 
 def output_grid():
     matplotlib.rcParams.update({'font.size': 15})
@@ -45,8 +63,6 @@ def metrics_plotly(metrics, title):
         )
     )
     return fig
-
-import plotly.figure_factory as ff
 
 def plotly_cm(cm):
     z = cm.values
