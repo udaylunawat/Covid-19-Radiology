@@ -33,13 +33,11 @@ directory_setup:
 	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed output/models/snapshots output/models/inference
 
 ct_scans_download:
-	kaggle datasets download tawsifurrahman/covid19-radiography-database
-	mv covid19-radiography-database.zip data/1_external/
+	kaggle datasets download -p data/1_external tawsifurrahman/covid19-radiography-database
 	unzip data/1_external/covid19-radiography-database.zip -d data/0_raw/
 
 corona_data:
-	kaggle datasets download imdevskp/corona-virus-report
-	mv corona-virus-report.zip data/1_external/
+	kaggle datasets download -p data/1_external imdevskp/corona-virus-report
 	unzip data/1_external/corona-virus-report.zip -d data/0_raw
 
 model_download:
