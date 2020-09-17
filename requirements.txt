@@ -1,6 +1,11 @@
+# local package
+-e .
+
 kaggle
 tensorflow
 seaborn
 pyngrok
 sklearn
 streamlit-nightly
+kaleido
+plotly>=4.4.1
