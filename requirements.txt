@@ -9,4 +9,4 @@ pyngrok
 sklearn
 streamlit-nightly
 kaleido
-plotly>=4.4.1
+plotly>=4.10.0
