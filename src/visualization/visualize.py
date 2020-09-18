@@ -8,9 +8,26 @@ import plotly.figure_factory as ff
 covid_image_dir = 'data/0_raw/COVID-19 Radiography Database/COVID-19'
 # COVID19images = os.listdir(covid_image_dir)
 
-class_dict = {0:'COVID19',
+class_dict = {0:'COVID-19',
               1:'NORMAL',
-              2:'PNEUMONIA'}
+              2:'Viral Pneumonia'}
+
+def counts_bar(data):
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(histfunc="sum",x=data['label'].value_counts().keys() ,y=data['label'].value_counts().values, opacity=0.4))
+
+    fig.update_layout(
+        title="Bar plot",
+        yaxis_title="Count",
+        # legend_title="Legend Title",
+        font=dict(
+            family="Courier New, monospace",
+            size=18,
+            color="RebeccaPurple"
+        )
+    )
+    fig.update_layout()
+    return fig
 
 def predict_label(file_path):
     image = cv2.imread(file_path)
