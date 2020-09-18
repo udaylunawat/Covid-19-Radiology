@@ -3,7 +3,7 @@
 
 opencv-python
 kaggle
-tensorflow
+tensorflow=2.3.0
 seaborn
 pyngrok
 sklearn
