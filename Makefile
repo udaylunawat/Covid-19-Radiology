@@ -9,6 +9,7 @@ BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
 PYTHON_INTERPRETER = python
 
+PROJECT_NAME = covid
 MODEL = https://storage.googleapis.com/dracarys3_bucket/covid/output/models/inference/base_model_covid_2.h5
 ifeq (,$(shell which conda))
 HAS_CONDA=False
@@ -26,8 +27,10 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 ## Make Dataset
-ETL: requirements data train
-data: directory_setup ct_scans_download corona_data
+ETL: requirements data
+kaggle_setup: kaggle
+data: directory_setup ct_scans_download
+train: train_model
 
 directory_setup:
 	mkdir -p data/0_raw data/1_external data/2_interim data/3_processed output/models/snapshots output/models/inference
@@ -36,15 +39,17 @@ ct_scans_download:
 	kaggle datasets download -p data/1_external tawsifurrahman/covid19-radiography-database
 	unzip data/1_external/covid19-radiography-database.zip -d data/0_raw/
 
-corona_data:
-	kaggle datasets download -p data/1_external imdevskp/corona-virus-report
-	unzip data/1_external/corona-virus-report.zip -d data/0_raw
+kaggle:
+	mkdir ~/.kaggle
+	cp kaggle.json ~/.kaggle/
+	ls ~/.kaggle
+	chmod 600 ~/.kaggle/kaggle.json
 
 model_download:
 	wget -c $(MODEL) -O output/models/inference/base_model_covid.h5 -q --show-progress
 
 ## Train Model
-train: data
+train_model:
 	$(PYTHON_INTERPRETER) src/models/train_model.py
 
 ## Delete all compiled Python files
