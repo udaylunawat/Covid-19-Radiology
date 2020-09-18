@@ -40,7 +40,7 @@ import plotly.graph_objs as go
 # import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 
-from src.visualization.visualize import metrics_plotly, plot_map
+from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
 from src.data.preprocess import covid_stats
 #============================ About ==========================
 def about():
@@ -79,9 +79,9 @@ st.sidebar.info(__doc__)
 activities = ["Data Visualization","Detector","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
-class_dict = {0:'COVID19',
+class_dict = {0:'COVID-19',
               1:'NORMAL',
-              2:'PNEUMONIA'}
+              2:'Viral Pneumonia'}
 # loaded_model = tf.keras.models.load_model("output/models/inference/base_model_covid.h5")
 if choice == "Detector":
 
@@ -167,6 +167,7 @@ elif choice == "Data Visualization":
 
 
 elif choice == "Performance Metrics":
+    # st.write(counts_bar(data))
     st.write(metrics_plotly(metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
     st.write(metrics_plotly(metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
     st.write(metrics_plotly(metrics = ['loss','val_loss'], title = 'Loss Plot'))
