@@ -3,10 +3,10 @@
 
 opencv-python
 kaggle
-tensorflow=2.3.0
+tensorflow==2.3.0
 seaborn
 pyngrok
 sklearn
 streamlit-nightly
 kaleido
-plotly>=4.10.0
+plotly==4.10.0
