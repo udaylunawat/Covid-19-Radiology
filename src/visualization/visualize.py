@@ -4,17 +4,20 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
+from sklearn.metrics import confusion_matrix
+from src.config import DATA_DIR, class_dict
 
-covid_image_dir = 'data/0_raw/COVID-19 Radiography Database/COVID-19'
-# COVID19images = os.listdir(covid_image_dir)
+# Load the history from the file 
+history = joblib.load('output/history.pkl')
 
-class_dict = {0:'COVID-19',
-              1:'NORMAL',
-              2:'Viral Pneumonia'}
-
-def counts_bar(data):
+## Bar Plot
+def counts_bar(data, labels, label_counts):
     fig = go.Figure()
-    fig.add_trace(go.Histogram(histfunc="sum",x=data['label'].value_counts().keys() ,y=data['label'].value_counts().values, opacity=0.4))
+    fig.add_trace(go.Histogram(histfunc="sum",
+                            x=labels,
+                            y=label_counts,
+                            opacity=0.3,
+                            marker=dict(color=['Yellow', 'Green', 'Red'])))
 
     fig.update_layout(
         title="Bar plot",
@@ -27,6 +30,7 @@ def counts_bar(data):
         )
     )
     fig.update_layout()
+    fig.show()
     return fig
 
 def predict_label(file_path):
@@ -42,52 +46,35 @@ def predict_label(file_path):
     # print('prediction: ',pred_class)
     return image, pred_class, probs
 
-def output_grid():
-    matplotlib.rcParams.update({'font.size': 15})
 
-    plt.figure(figsize=(15,15))
-    for i in range(9):
-        plt.subplot(3, 3, i + 1)
-        image, pred_label, probs = predict_label(os.path.join(covid_image_dir,COVID19images[i]))
-        # image = cv2.imread(os.path.join(covid_image_dir,COVID19images[i]))
-        plt.imshow((image),cmap='gray'), plt.axis("off")
-        plt.title("Actual : COVID19\n Prediction : {}".format(pred_label))
-    plt.show()
-
-
-# Load the history from the file 
-history = joblib.load('output/history.pkl')  
-
-def metrics_plotly(metrics, title):
+def metrics_plotly(history, metrics, title):
     # Create traces
     fig = go.Figure()
 
     for metric in metrics:
         fig.add_trace(go.Scatter(y=history[metric],
                             mode='lines+markers',
-                            name=metric,
-                            hovertemplate=
-                            "<br>Epoch: %{x} </br>"+metric+": %{y:.2f}"))
+                            name=metric))
         
     fig.update_layout(
         title=title,
         xaxis_title="Epochs",
         yaxis_title="Accuracy",
         # legend_title="Legend Title",
-        # hovermode='y',
         font=dict(
             family="Courier New, monospace",
             size=18,
             color="RebeccaPurple"
         )
     )
+
     return fig
 
-def plotly_cm(cm):
+def plotly_cm(cm, label_list):
     z = cm.values
 
-    x = ['COVID-19', 'NORMAL', 'Viral Pneumonia'] # encoder.classes_
-    y =  ['COVID-19', 'NORMAL', 'Viral Pneumonia'] # encoder.classes_
+    x = label_list
+    y =  label_list
 
     # change each element of z to type string for annotations
     z_text = [[str(y) for y in x] for x in z]
@@ -138,3 +125,25 @@ def plot_map(df, col):
     tickvals=[2,3,4,5,6,7],
     ticktext=["100","1K","10K", "100K","1M", "10M"]))
     return fig
+
+def grid_plot(label, function):
+    image_dir = os.path.join(DATA_DIR,label)
+    images_list = os.listdir(image_dir)
+
+    matplotlib.rcParams.update({'font.size': 9})
+
+    plt.figure(figsize=(15,15))
+    for i in range(16):
+        plt.subplot(4, 4, i + 1)
+
+        if function == "Show":
+            image = cv2.imread(os.path.join(image_dir, images_list[i]))
+            plt.title("Filename: {}\nClass: {}".format(images_list[i], label))
+
+        elif function == "Predict":
+            image, pred_label, probs = predict_label(os.path.join(image_dir,images_list[i]))
+            plt.title("Filename: {}\nActual: {}\nPrediction: {}".format(images_list[i], label, pred_label))
+
+        plt.imshow((image),cmap='gray'), plt.axis("off")
+    plt.tight_layout()
+    plt.show()

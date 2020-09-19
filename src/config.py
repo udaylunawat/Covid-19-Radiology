@@ -1,36 +1,20 @@
-import pandas as pd
-import numpy as np
+import datetime
 
-import seaborn as sns
-from matplotlib import rc
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-
-from pylab import rcParams
-from pandas.plotting import register_matplotlib_converters
-
-# register_matplotlib_converters()
-
-# sns.set(style='whitegrid', palette='muted', font_scale=1.5)
-# rcParams['figure.figsize'] = 22, 10
-
-# RANDOM_SEED = 42
-
-# processed_df = pd.read_csv('data/3_processed/processed.csv')
-
-# train_df, val_df = train_test_split(
-#   processed_df, 
-#   test_size=0.2, 
-#   random_state=RANDOM_SEED
-# )
+DATA_DIR = 'data/0_raw/COVID-19 Radiography Database'
+PROCESSED_DATA_PATH = 'data/3_processed/data.csv'
+PRETRAINED_MODEL = 'output/models/inference/base_model_covid.h5'
+rapid-api-key = "dd8d4e05e8mshc5ab62dcd8a5f08p14b028jsna2726a63a74d"
 
 
-# trainval = [name.split('.')[0] for name in processed_df['image_name']]
-# train = [name.split('.')[0] for name in train_df['image_name']]
-# val = [name.split('.')[0] for name in val_df['image_name']]
+#============================ Model config ==========================
+class_dict = {0:'COVID-19',
+              1:'NORMAL',
+              2:'Viral Pneumonia'}
+              
+BATCH_SIZE = 64
+IMG_SIZE = 224
+LR = 0.0001
+EPOCHS = 20
 
-
-# ANNOTATIONS_FILE = 'data/3_processed/annotations.csv'
-# CLASSES_FILE = 'data/3_processed/classes.csv'
-# PRETRAINED_MODEL = 'output/models/snapshots/_pretrained_model.h5'
-# URL_MODEL = 'https://github.com/fizyr/keras-retinanet/releases/download/0.5.1/resnet50_coco_best_v2.1.0.h5'
+LOG_DIR = "output/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+CHECKPOINT_DIR = 'output/models/snapshots/model-{epoch:03d}-{val_accuracy:03f}.h5'
