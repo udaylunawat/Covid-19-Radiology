@@ -38,6 +38,7 @@ directory_setup:
 ct_scans_download:
 	kaggle datasets download -p data/1_external tawsifurrahman/covid19-radiography-database
 	unzip data/1_external/covid19-radiography-database.zip -d data/0_raw/
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py
 
 kaggle:
 	mkdir ~/.kaggle

@@ -22,7 +22,6 @@ from PIL import Image
 import requests
 import pandas as pd
 from tensorflow.keras import backend as k
-tf.keras.backend.clear_session()
 from keras.models import load_model
 
 import io
@@ -37,8 +36,9 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
+from src.data.make_dataset import live_data
 from src.data.preprocess import covid_stats
-from src.config import rapid-api-key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict
+from src.config import rapid_api_key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict
 
 #============================ About ==========================
 def about():
@@ -57,7 +57,7 @@ def streamlit_preview_image(image):
 
 #======================== Time To See The Magic ===========================
 
-response = live_data(rapid-api-key)
+response = live_data(rapid_api_key)
 data = pd.read_csv(PROCESSED_DATA_PATH)
 image = None, None
 img_size = 400
@@ -70,6 +70,7 @@ st.sidebar.info(__doc__)
 activities = ["Data Visualization","Detector","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
+k.clear_session()
 model = load_model(PRETRAINED_MODEL)
 if choice == "Detector":
 

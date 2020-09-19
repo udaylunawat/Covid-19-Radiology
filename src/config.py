@@ -3,7 +3,10 @@ import datetime
 DATA_DIR = 'data/0_raw/COVID-19 Radiography Database'
 PROCESSED_DATA_PATH = 'data/3_processed/data.csv'
 PRETRAINED_MODEL = 'output/models/inference/base_model_covid.h5'
-rapid-api-key = "dd8d4e05e8mshc5ab62dcd8a5f08p14b028jsna2726a63a74d"
+
+
+#============================ Live Data config ==========================
+rapid_api_key = "dd8d4e05e8mshc5ab62dcd8a5f08p14b028jsna2726a63a74d"
 
 
 #============================ Model config ==========================
