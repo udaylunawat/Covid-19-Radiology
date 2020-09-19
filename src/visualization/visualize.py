@@ -1,14 +1,10 @@
 import os
-import joblib
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 from sklearn.metrics import confusion_matrix
 from src.config import DATA_DIR, class_dict
-
-# Load the history from the file 
-history = joblib.load('output/history.pkl')
 
 ## Bar Plot
 def counts_bar(data, labels, label_counts):

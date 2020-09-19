@@ -12,4 +12,5 @@ def covid_stats(res):
     country_wise['deaths'] = country_wise['deaths'].str.replace(',', '').astype(int)
     country_wise['deaths_per_1m_population'] = country_wise['deaths_per_1m_population'].str.replace(',', '').astype(float)
     country_wise = country_wise.astype({'cases': 'int', 'deaths': 'int', 'deaths_per_1m_population':'float64'})
-    return country_wise
+    update = data['statistic_taken_at']
+    return country_wise, update

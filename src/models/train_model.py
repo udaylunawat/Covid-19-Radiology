@@ -12,7 +12,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import VGG16
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 from tensorflow.keras.layers import Input, Dense, Flatten, Dropout
 
 from src.config import BATCH_SIZE, IMG_SIZE, LR, EPOCHS, LOG_DIR, CHECKPOINT_DIR, PROCESSED_DATA_PATH

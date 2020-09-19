@@ -14,7 +14,7 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 from os import listdir
 from os.path import isfile, join
 import cv2
-
+import joblib
 import time
 import random
 import numpy as np
@@ -22,13 +22,12 @@ from PIL import Image
 import requests
 import pandas as pd
 from tensorflow.keras import backend as k
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 import io
 
 import seaborn as sns
 import matplotlib.pyplot as plt
-
 
 # interactive visualization
 import plotly.express as px
@@ -59,6 +58,8 @@ def streamlit_preview_image(image):
 
 response = live_data(rapid_api_key)
 data = pd.read_csv(PROCESSED_DATA_PATH)
+# Load the history from the file 
+history = joblib.load('output/history.pkl')
 image = None, None
 img_size = 400
 
@@ -145,13 +146,14 @@ if choice == "Detector":
 
 elif choice == "Data Visualization":
 
-    country_wise = covid_stats(response)
+    country_wise, updated_at = covid_stats(response)
     st.title("Country wise data")
+    st.write("**Data Updated at**: {}".format(updated_at))
     st.write(country_wise)
 
-    st.write(plot_map(country_wise, 'cases'))
-    st.write(plot_map(country_wise, 'deaths'))
-    st.write(plot_map(country_wise, 'deaths_per_1m_population'))
+    st.title("Covid Live maps")
+    map_option = st.selectbox("Select map type",['cases','deaths','deaths_per_1m_population'])
+    st.write(plot_map(country_wise, map_option))
 
 
 elif choice == "Performance Metrics":
@@ -160,9 +162,9 @@ elif choice == "Performance Metrics":
     label_counts = data['label'].value_counts().values
     st.write(counts_bar(data, labels, label_counts))
 
-    st.write(metrics_plotly(metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
-    st.write(metrics_plotly(metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
-    st.write(metrics_plotly(metrics = ['loss','val_loss'], title = 'Loss Plot'))
+    st.write(metrics_plotly(history,metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
+    st.write(metrics_plotly(history,metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
+    st.write(metrics_plotly(history,metrics = ['loss','val_loss'], title = 'Loss Plot'))
     st.image('output/figures/cm.png')
     st.sidebar.markdown("### Prediction Preview")
     st.sidebar.image('output/figures/pred.png', width = 300)
