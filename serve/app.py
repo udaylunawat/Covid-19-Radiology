@@ -58,8 +58,10 @@ def streamlit_preview_image(image):
 
 response = live_data(rapid_api_key)
 data = pd.read_csv(PROCESSED_DATA_PATH)
+
 # Load the history from the file 
 history = joblib.load('output/history.pkl')
+
 image = None, None
 img_size = 400
 
@@ -148,7 +150,7 @@ elif choice == "Data Visualization":
 
     country_wise, updated_at = covid_stats(response)
     st.title("Country wise data")
-    st.write("**Data Updated at**: {}".format(updated_at))
+    st.write("**Data Updated at**: {} UTC/GMT+0 Timezone".format(updated_at))
     st.write(country_wise)
 
     st.title("Covid Live maps")
