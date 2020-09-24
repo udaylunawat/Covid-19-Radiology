@@ -18,7 +18,6 @@ from tensorflow.keras.layers import Input, Dense, Flatten, Dropout
 from src.config import BATCH_SIZE, IMG_SIZE, LR, EPOCHS, LOG_DIR, CHECKPOINT_DIR, PROCESSED_DATA_PATH
 
 
-
 def VGG16_model():
     base = VGG16(include_top=False, weights='imagenet', input_shape=(IMG_SIZE, IMG_SIZE, 3))
     

@@ -1,7 +1,7 @@
 import os
 import requests
 import pandas as pd
-from src.config import rapid_api_key, DATA_DIR, PROCESSED_DATA_PATH
+from src.config import DATA_DIR, PROCESSED_DATA_PATH
 
 def main():
     imagePaths = []
@@ -25,7 +25,7 @@ def live_data(key):
 
     headers = {
         'x-rapidapi-host': "coronavirus-monitor.p.rapidapi.com",
-        'x-rapidapi-key': rapid_api_key
+        'x-rapidapi-key': key
         }
 
     response = requests.request("GET", url, headers=headers)

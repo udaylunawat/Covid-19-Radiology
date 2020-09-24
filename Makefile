@@ -27,7 +27,7 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 ## Make Dataset
-ETL: requirements data
+ETL: kaggle_setup requirements data
 kaggle_setup: kaggle
 data: directory_setup ct_scans_download
 train: train_model
