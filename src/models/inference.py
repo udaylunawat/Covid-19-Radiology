@@ -1,4 +1,4 @@
-from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
 
 def predict_label(image):
     '''
@@ -15,7 +15,7 @@ def predict_label(image):
     probs : array like output of model prediction probabilities
     '''
     # image = cv2.imread(file_path)
-    test_image = VGG16.preprocess_input(image)
+    test_image = preprocess_input(image)
     probs = model.predict(test_image)
     pred_class = np.argmax(probs)
     pred_class = class_dict[pred_class]

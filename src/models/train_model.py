@@ -8,6 +8,7 @@ from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 from tensorflow.keras.layers import Input, Dense, Flatten, Dropout
 
@@ -47,7 +48,7 @@ data = pd.read_csv(PROCESSED_DATA_PATH)
 data = shuffle(data)
 
 #================================= Image data Loading and Augmentation =================================
-datagen = ImageDataGenerator(preprocessing_function=VGG16.preprocess_input,
+datagen = ImageDataGenerator(preprocessing_function=preprocess_input,
                              rescale=1. / 255, validation_split=0.2,
                              rotation_range=25,
                              fill_mode="nearest")
