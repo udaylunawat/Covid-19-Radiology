@@ -3,6 +3,19 @@ import numpy as np
 import pandas as pd
 
 def covid_stats(res):
+    '''
+    Preprocesses data collected from rapid api and returns processed data and ,date and time of data generation.
+
+    Parameters
+    ----------
+    res : response value returned by live_data function in make_dataset.py
+
+
+    Returns
+    -------
+    country_wise : Latest Country wise covid-19 data with country name, cases, deaths and deaths per million population.
+    update: date and time (GMT +0) when data was generated on rapidapi.
+    '''
     data = json.loads(res.text) 
 
     country_wise = pd.DataFrame(data['countries_stat'])

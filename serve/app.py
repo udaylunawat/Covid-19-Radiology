@@ -1,9 +1,13 @@
+#================================= docs =================================
+
 """Covid Radiology
 - Project Description
 - Covid Description
 - DL Description
 - VGG16 Description
 """
+
+#================================= Import Section =================================
 
 # streamlit configurations and options
 import streamlit as st
@@ -37,24 +41,37 @@ from plotly.subplots import make_subplots
 from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
 from src.data.make_dataset import live_data
 from src.data.preprocess import covid_stats
-from src.config import rapid_api_key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict
+from src.config import rapid_api_key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict, sample_images_dict
 
 #============================ About ==========================
+
 def about():
 
     st.info("Built with Streamlit by [Uday 😎](http://udaylunawat.github.io/)")
 
 #================================= Functions =================================
-# @st.cache(suppress_st_warning=True)
+
+# @st.cache(suppress_st_warning=True, allow_output_mutation=True, show_spinner=False)
 def streamlit_preview_image(image):
     st.image(
                 image,
                 width =img_size,
                 caption = "Image Preview")
 
+def image_from_url(url):
+    response = requests.get(IMAGE_PATH)
+    image_bytes = io.BytesIO(response.content)
+    image = Image.open(image_bytes)
+    return image
 
+# setting load_model as cached to ensure model only loads once.
+# # Allowed mutation to avoid error. 
+@st.cache(suppress_st_warning=True, allow_output_mutation=True, show_spinner=False)
+def keras_load_model(model_path):
+    model = load_model(model_path)
+    return model
 
-#======================== Time To See The Magic ===========================
+#======================== Loading data ===========================
 
 response = live_data(rapid_api_key)
 data = pd.read_csv(PROCESSED_DATA_PATH)
@@ -65,17 +82,23 @@ history = joblib.load('output/history.pkl')
 image = None, None
 img_size = 400
 
-st.sidebar.markdown("## COVID-19 Radiology")
+
+#================================= Info for sidebar and common to all pages =================================
+
+st.sidebar.markdown("## COVID-19 Coronal CT-scan classification")
 st.sidebar.markdown("Made with :heart: by [Uday Lunawat](http://udaylunawat.github.io/)")
 
 
 st.sidebar.info(__doc__)
-activities = ["Data Visualization","Detector","Performance Metrics","About"]
+activities = ["Data Visualization","CT-scan Classifier","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
-k.clear_session()
-model = load_model(PRETRAINED_MODEL)
-if choice == "Detector":
+#================================= CT-scan Classifier section =================================
+
+if choice == "CT-scan Classifier":
+
+    k.clear_session()
+    model = keras_load_model(PRETRAINED_MODEL)
 
     st.write("## Upload your own image")
 
@@ -85,9 +108,9 @@ if choice == "Detector":
 
     predictor = st.button("Make a Prediction 🔥")
 
-    sample_dir = 'data/sample_images/' 
-    samplefiles = sorted([sample for sample in listdir(sample_dir)])
     upload_options = ['Choose existing', 'Upload','URL']
+
+    samplefiles = sample_images_dict
 
     query_params = st.experimental_get_query_params()
     # Query parameters are returned as a list to support multiselect.
@@ -98,12 +121,13 @@ if choice == "Detector":
     activity = choose.selectbox("Choose existing sample or try your own:", upload_options, index=default)
 
     if activity:
+        # updating url based on set activity 
         st.experimental_set_query_params(activity=upload_options.index(activity))
+        
         if activity == 'Choose existing':
-            selected_sample = upload.selectbox("Pick from existing samples", (samplefiles))
-            image = Image.open(sample_dir + selected_sample)
-            IMAGE_PATH = sample_dir + selected_sample
-            image = Image.open(sample_dir + selected_sample)
+            selected_sample = upload.selectbox("Pick from existing samples", (list(samplefiles.keys())))
+            IMAGE_PATH = samplefiles[selected_sample]
+            image = image_from_url(IMAGE_PATH)
             img_file_buffer = None
 
         elif activity == 'Upload':
@@ -124,9 +148,7 @@ if choice == "Detector":
             image = None
             IMAGE_PATH = upload.text_input('URL to Image Address:')
             try:
-                response = requests.get(IMAGE_PATH)
-                image_bytes = io.BytesIO(response.content)
-                image = Image.open(image_bytes)
+                image = image_from_url(IMAGE_PATH)
             except:
                 pass
             selected_sample, img_file_buffer = None, None
@@ -137,14 +159,12 @@ if choice == "Detector":
         streamlit_preview_image(image)
 
         if predictor:
-            test_image = cv2.resize(np.array(image), (224,224),interpolation=cv2.INTER_NEAREST)
-            test_image = np.expand_dims(test_image,axis=0)
-            probs = model.predict(test_image)
-            pred_class = np.argmax(probs)
-            pred_class = class_dict[pred_class]
+            pred_class, probs = predict_label(image)
 
             st.sidebar.success('Prediction: '+pred_class)
 
+
+#================================= Data visualization section =================================
 
 elif choice == "Data Visualization":
 
@@ -158,19 +178,23 @@ elif choice == "Data Visualization":
     st.write(plot_map(country_wise, map_option))
 
 
+#================================= Performance metrics section =================================
+
 elif choice == "Performance Metrics":
     
     labels = list(data['label'].value_counts().keys())
     label_counts = data['label'].value_counts().values
-    st.write(counts_bar(data, labels, label_counts))
+    st.write(counts_bar(labels, label_counts))
 
-    st.write(metrics_plotly(history,metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
-    st.write(metrics_plotly(history,metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
-    st.write(metrics_plotly(history,metrics = ['loss','val_loss'], title = 'Loss Plot'))
+    st.write(metrics_plotly(history, metrics = ['accuracy','loss','val_accuracy','val_loss'], title = 'Accuracy & Loss Plot'))
+    st.write(metrics_plotly(history, metrics = ['accuracy','val_accuracy'], title = 'Accuracy Plot'))
+    st.write(metrics_plotly(history, metrics = ['loss','val_loss'], title = 'Loss Plot'))
     st.image('output/figures/cm.png')
     st.sidebar.markdown("### Prediction Preview")
     st.sidebar.image('output/figures/pred.png', width = 300)
 
+
+#================================= About section =================================
+
 elif choice == "About":
     about()
-

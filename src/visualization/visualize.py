@@ -4,10 +4,26 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 from sklearn.metrics import confusion_matrix
+
 from src.config import DATA_DIR, class_dict
+from src.models.inference import predict_label
 
 ## Bar Plot
-def counts_bar(data, labels, label_counts):
+def counts_bar(labels, label_counts):
+    '''
+    Creates a plotly bar plot with Target label value_counts.
+
+
+    Parameters
+    ----------
+    labels : list like input for target / classes
+    label_counts : array_like input for counts of classes
+
+
+    Returns
+    -------
+    bar plot plotly fig
+    '''
     fig = go.Figure()
     fig.add_trace(go.Histogram(histfunc="sum",
                             x=labels,
@@ -29,21 +45,22 @@ def counts_bar(data, labels, label_counts):
     fig.show()
     return fig
 
-def predict_label(file_path):
-    image = cv2.imread(file_path)
-    test_image = cv2.resize(image, (224,224),interpolation=cv2.INTER_NEAREST)
-    # plt.imshow(test_image)
-    test_image = np.expand_dims(test_image,axis=0)
-    probs = model.predict(test_image)
-    pred_class = np.argmax(probs)
-
-    pred_class = class_dict[pred_class]
-
-    # print('prediction: ',pred_class)
-    return image, pred_class, probs
-
 
 def metrics_plotly(history, metrics, title):
+    '''
+    Plots line chart for given history metrics with title
+
+    Parameters
+    ----------
+    history : dict type input of history.history 
+    metrics : array_like input for history metric names
+    title : string like title of plot
+
+    Returns
+    -------
+    line plot plotly fig
+    '''
+
     # Create traces
     fig = go.Figure()
 
@@ -55,7 +72,7 @@ def metrics_plotly(history, metrics, title):
     fig.update_layout(
         title=title,
         xaxis_title="Epochs",
-        yaxis_title="Accuracy",
+        yaxis_title="Accuracy/Loss",
         # legend_title="Legend Title",
         font=dict(
             family="Courier New, monospace",
@@ -67,6 +84,19 @@ def metrics_plotly(history, metrics, title):
     return fig
 
 def plotly_cm(cm, label_list):
+    '''
+    Plots annotated heatmap of confusion matrix
+
+    Parameters
+    ----------
+    cm : confusion matrix
+    label_list : array_like input for history metric names
+
+    Returns
+    -------
+    line plot plotly fig
+    '''
+
     z = cm.values
 
     x = label_list
@@ -112,18 +142,44 @@ def plotly_cm(cm, label_list):
     return fig
 
 def plot_map(df, col):
+    '''
+    Plots choropleth maps of live covid statistics based on column passed.
+    Data is displayed in a log scale.
+
+    Parameters
+    ----------
+    df : DataFrame input for preprocessed covid stats
+    col : string input for column names
+
+    Returns
+    -------
+    choropleth map plot plotly fig
+    '''
+
     # df = df[df[col]>0]
     fig = px.choropleth(df, locations="country_name", locationmode='country names', 
                   color=np.log10(df[col]), hover_name="country_name", 
                   title=col, hover_data=[col], color_continuous_scale=px.colors.sequential.Plasma)
     fig.update_layout(coloraxis_colorbar=dict(
-    title=col,
-    tickvals=[2,3,4,5,6,7],
-    ticktext=["100","1K","10K", "100K","1M", "10M"]))
+        title=col,
+        tickvals=[2,3,4,5,6,7],
+        ticktext=["100","1K","10K", "100K","1M", "10M"]))
     return fig
 
 def grid_plot(label, function):
-    image_dir = os.path.join(DATA_DIR,label)
+    '''
+    Plots grid plot for data and prediction as well.
+
+    Parameters
+    ----------
+    label : string like input for Category name
+    function : string input either "Show" or "Predict"
+
+    Returns
+    -------
+    None
+    '''
+    image_dir = os.path.join(DATA_DIR, label)
     images_list = os.listdir(image_dir)
 
     matplotlib.rcParams.update({'font.size': 9})
@@ -131,13 +187,13 @@ def grid_plot(label, function):
     plt.figure(figsize=(15,15))
     for i in range(16):
         plt.subplot(4, 4, i + 1)
+        image = cv2.imread(os.path.join(image_dir, images_list[i]))
 
         if function == "Show":
-            image = cv2.imread(os.path.join(image_dir, images_list[i]))
             plt.title("Filename: {}\nClass: {}".format(images_list[i], label))
 
         elif function == "Predict":
-            image, pred_label, probs = predict_label(os.path.join(image_dir,images_list[i]))
+            image, pred_label, probs = predict_label(image)
             plt.title("Filename: {}\nActual: {}\nPrediction: {}".format(images_list[i], label, pred_label))
 
         plt.imshow((image),cmap='gray'), plt.axis("off")
