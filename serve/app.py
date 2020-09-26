@@ -41,6 +41,7 @@ from plotly.subplots import make_subplots
 from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
 from src.data.make_dataset import live_data
 from src.data.preprocess import covid_stats
+from src.models.inference import predict_label
 from src.config import rapid_api_key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict, sample_images_dict
 
 #============================ About ==========================
