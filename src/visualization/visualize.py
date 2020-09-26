@@ -1,5 +1,8 @@
 import os
+import cv2
 import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
@@ -166,7 +169,7 @@ def plot_map(df, col):
         ticktext=["100","1K","10K", "100K","1M", "10M"]))
     return fig
 
-def grid_plot(label, function):
+def grid_plot(model, function, label='Covid-19'):
     '''
     Plots grid plot for data and prediction as well.
 
@@ -193,7 +196,7 @@ def grid_plot(label, function):
             plt.title("Filename: {}\nClass: {}".format(images_list[i], label))
 
         elif function == "Predict":
-            image, pred_label, probs = predict_label(image)
+            image, pred_label, probs = predict_label(image, model)
             plt.title("Filename: {}\nActual: {}\nPrediction: {}".format(images_list[i], label, pred_label))
 
         plt.imshow((image),cmap='gray'), plt.axis("off")
