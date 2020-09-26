@@ -38,10 +38,10 @@ import plotly.express as px
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
 from src.data.make_dataset import live_data
 from src.data.preprocess import covid_stats
 from src.models.inference import predict_label
+from src.visualization.visualize import metrics_plotly, plot_map, counts_bar
 from src.config import rapid_api_key, PRETRAINED_MODEL, PROCESSED_DATA_PATH, class_dict, sample_images_dict
 
 #============================ About ==========================
@@ -54,7 +54,7 @@ def about():
 
 # @st.cache(suppress_st_warning=True, allow_output_mutation=True, show_spinner=False)
 def streamlit_preview_image(image):
-    st.image(
+    preview.image(
                 image,
                 width =img_size,
                 caption = "Image Preview")
@@ -106,9 +106,11 @@ if choice == "CT-scan Classifier":
     # placeholders
     choose = st.empty() 
     upload = st.empty()
-
+    preview_text = st.empty()
+    preview = st.empty()
     predictor = st.button("Make a Prediction 🔥")
-
+    prediction = st.empty()
+    st.markdown('###\n###')
     upload_options = ['Choose existing', 'Upload','URL']
 
     samplefiles = sample_images_dict
@@ -156,13 +158,13 @@ if choice == "CT-scan Classifier":
 
     if image:
         
-        st.markdown("## Preview Of Selected Image! 👀")
+        preview_text.markdown("## Preview Of Selected Image! 👀")
         streamlit_preview_image(image)
 
         if predictor:
-            pred_class, probs = predict_label(image)
+            pred_class, probs = predict_label(image, model)
 
-            st.sidebar.success('Prediction: '+pred_class)
+            prediction.success('Prediction: '+pred_class)
 
 
 #================================= Data visualization section =================================
