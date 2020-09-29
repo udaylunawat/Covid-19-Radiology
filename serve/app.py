@@ -59,8 +59,9 @@ def streamlit_preview_image(image):
                 width =img_size,
                 caption = "Image Preview")
 
+@st.cache(suppress_st_warning=True, allow_output_mutation=True, show_spinner=False)
 def image_from_url(url):
-    response = requests.get(IMAGE_PATH)
+    response = requests.get(url, stream = True, headers={"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
     image_bytes = io.BytesIO(response.content)
     image = Image.open(image_bytes)
     return image
@@ -110,10 +111,8 @@ if choice == "CT-scan Classifier":
     preview = st.empty()
     predictor = st.button("Make a Prediction 🔥")
     prediction = st.empty()
-    st.markdown('###\n###')
+    
     upload_options = ['Choose existing', 'Upload','URL']
-
-    samplefiles = sample_images_dict
 
     query_params = st.experimental_get_query_params()
     # Query parameters are returned as a list to support multiselect.
@@ -128,8 +127,8 @@ if choice == "CT-scan Classifier":
         st.experimental_set_query_params(activity=upload_options.index(activity))
         
         if activity == 'Choose existing':
-            selected_sample = upload.selectbox("Pick from existing samples", (list(samplefiles.keys())))
-            IMAGE_PATH = samplefiles[selected_sample]
+            selected_sample = upload.selectbox("Pick from existing samples", (list(sample_images_dict.keys())))
+            IMAGE_PATH = sample_images_dict[selected_sample]
             image = image_from_url(IMAGE_PATH)
             img_file_buffer = None
 
@@ -170,10 +169,12 @@ if choice == "CT-scan Classifier":
 #================================= Data visualization section =================================
 
 elif choice == "Data Visualization":
-
-    country_wise, updated_at = covid_stats(response)
+    
+    timezone = 'America/Denver'
+    country_wise, updated_at = covid_stats(response, timezone)
     st.title("Country wise data")
-    st.write("**Data Updated at**: {} UTC/GMT+0 Timezone".format(updated_at))
+    st.write("**Data Updated at**: {}".format(updated_at))
+    st.write("**Timezone**: {}".format(timezone.split('/')[0]))
     st.write(country_wise)
 
     st.title("Covid Live maps")
