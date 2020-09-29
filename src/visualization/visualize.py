@@ -45,7 +45,6 @@ def counts_bar(labels, label_counts):
         )
     )
     fig.update_layout()
-    fig.show()
     return fig
 
 
