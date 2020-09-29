@@ -14,9 +14,9 @@ rapid_api_key = "dd8d4e05e8mshc5ab62dcd8a5f08p14b028jsna2726a63a74d"
 
 #============================ Samples Links ==========================
 sample_images_dict = {
-    'covid_sample1':'https://i.imgur.com/lrDcWOS.png',
+    'covid_sample1':'https://i.imgur.com/86SEF4p.png',
     'covid_sample2':'https://i.imgur.com/E2G2vWm.png',
-    'covid_sample3':'https://i.imgur.com/86SEF4p.png',
+    'covid_sample3':'https://i.imgur.com/lrDcWOS.png',
     'covid_sample4':'https://i.imgur.com/87vLvst.png',
     'covid_sample5':'https://i.imgur.com/fj7rvy9.png',
     'normal_sample1':'https://i.imgur.com/JniKpBh.png',
