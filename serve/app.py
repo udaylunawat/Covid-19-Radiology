@@ -12,7 +12,7 @@
 # streamlit configurations and options
 import streamlit as st
 from streamlit import caching
-st.beta_set_page_config(page_title="Covid-19", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
+st.beta_set_page_config(page_title="Covid-19 Classification", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 from os import listdir
@@ -87,7 +87,7 @@ img_size = 400
 
 #================================= Info for sidebar and common to all pages =================================
 
-st.sidebar.markdown("## COVID-19 Coronal CT-scan classification")
+st.sidebar.markdown("## COVID-19 & Pneumonia Coronal Xray classification")
 st.sidebar.markdown("Made with :heart: by [Uday Lunawat](http://udaylunawat.github.io/)")
 
 
@@ -97,7 +97,7 @@ choice = st.sidebar.radio("Go to", activities)
 
 #================================= CT-scan Classifier section =================================
 
-if choice == "CT-scan Classifier":
+if choice == "Coronal X-ray Classifier":
 
     k.clear_session()
     model = keras_load_model(PRETRAINED_MODEL)

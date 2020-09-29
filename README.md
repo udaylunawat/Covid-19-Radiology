@@ -10,7 +10,7 @@
 
   <h4 align="center">
   <p align="center">
-    Detects Covid-19 and Pneumonia using CT-scans & Deep Learning
+    Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning
     </h4>
   </p>
 </p>
