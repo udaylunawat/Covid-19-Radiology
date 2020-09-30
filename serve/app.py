@@ -92,7 +92,7 @@ st.sidebar.markdown("Made with :heart: by [Uday Lunawat](http://udaylunawat.gith
 
 
 st.sidebar.info(__doc__)
-activities = ["Data Visualization","CT-scan Classifier","Performance Metrics","About"]
+activities = ["Data Visualization","Coronal X-ray Classifier","Performance Metrics","About"]
 choice = st.sidebar.radio("Go to", activities)
 
 #================================= CT-scan Classifier section =================================
