@@ -86,7 +86,8 @@ Directory Tree
     │   ├── models                        <- Scripts to train models and then use trained models to make
     │   │   │                                predictions
     │   │   ├── predict_model.py
-    │   │   └── train_model.py
+    │   │   ├── train_model.py
+    │   │   └── inference.py
     │   │
     │   └── visualization                 <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
@@ -112,7 +113,7 @@ Directory Tree
 
 --------
 ## Future To Do
-1. Work with CT-scans of any orientation.
+1. Work with Xray of any orientation other than coronal.
 
 ## Bug / Feature Request
 If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/prasanna) by including your search query and the expected result.
@@ -137,7 +138,7 @@ Contributions are what make the open source community such an amazing place to b
 ## License
 [![Apache license](https://img.shields.io/badge/license-apache-blue?style=for-the-badge&logo=appveyor)](http://www.apache.org/licenses/LICENSE-2.0e)
 
-Copyright 2020 Prasanna
+Copyright 2020 Uday
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -152,7 +153,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Credits
-- [Rohit Swami]
+- 
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
 
