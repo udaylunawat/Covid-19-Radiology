@@ -170,7 +170,7 @@ if choice == "Coronal X-ray Classifier":
 
 elif choice == "Data Visualization":
     
-    timezone = 'America/Denver'
+    timezone = 'Asia/Kolkata'
     country_wise, updated_at = covid_stats(response, timezone)
     st.title("Country wise data")
     st.write("**Data Updated at**: {}".format(updated_at))
