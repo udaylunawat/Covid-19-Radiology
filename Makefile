@@ -10,7 +10,7 @@ PROFILE = default
 PYTHON_INTERPRETER = python
 
 PROJECT_NAME = covid
-MODEL = https://www.dropbox.com/s/rws2mpnxb5kucci/base_model_covid.h5
+MODEL = https://www.dropbox.com/s/rws2mpnxb5kucci/base_model_covid.h5?dl=0
 ifeq (,$(shell which conda))
 HAS_CONDA=False
 else
