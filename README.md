@@ -37,11 +37,21 @@
 - Keeping track of the Pandemic data, from a personal viewpoint.
 
 ## Instructions
-
+<table class="tfo-notebook-buttons" align="left">
+  <td>
+    <a target="_blank" href="https://colab.research.google.com/drive/1dNvFgDjxiu_Ziu_oVn63uYgrc-OJ9uvE"><img src="https://www.tensorflow.org/images/colab_logo_32px.png" />Run in Google Colab</a>
+  </td>
+  <td>
+    <a target="_blank" href="https://github.com/udaylunawat/Covid-19-Radiology"><img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />View source on GitHub</a>
+  </td>
+  <td>
+    <a href="https://github.com/udaylunawat/Covid-19-Radiology"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
+  </td>
+</table>
 
 <br></br>
 ## Demo
-Link: [Deploy on colab in 2 mins](https://colab.research.google.com)
+Link: [Deploy on colab in 2 mins](https://colab.research.google.com/drive/1dNvFgDjxiu_Ziu_oVn63uYgrc-OJ9uvE)
 
 
 <!-- ## Run
