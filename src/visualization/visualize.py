@@ -11,7 +11,11 @@ from sklearn.metrics import confusion_matrix
 from src.config import DATA_DIR, class_dict
 from src.models.inference import predict_label
 
+# Functions
+
+
 ## Bar Plot
+
 def counts_bar(labels, label_counts):
     '''
     Creates a plotly bar plot with Target label value_counts.
@@ -28,14 +32,16 @@ def counts_bar(labels, label_counts):
     bar plot plotly fig
     '''
     fig = go.Figure()
-    fig.add_trace(go.Histogram(histfunc="sum",
-                            x=labels,
-                            y=label_counts,
-                            opacity=0.3,
-                            marker=dict(color=['Yellow', 'Green', 'Red'])))
+    fig.add_trace(go.Bar(x=labels,
+                        y=label_counts,
+                        text=['{} samples'.format(counts) for counts in label_counts],
+                        textposition='auto',
+                        hovertext=['{} samples'.format(counts) for counts in label_counts],
+                        opacity=0.3,
+                        marker=dict(color=['Green', 'Yellow', 'Red', 'Orange'])))
 
     fig.update_layout(
-        title="Bar plot",
+        title_text="Sample Counts Bar plot",
         yaxis_title="Count",
         # legend_title="Legend Title",
         font=dict(
