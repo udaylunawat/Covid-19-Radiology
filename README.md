@@ -45,7 +45,7 @@
     <a target="_blank" href="https://github.com/udaylunawat/Covid-19-Radiology"><img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />View source on GitHub</a>
   </td>
   <td>
-    <a href="https://github.com/udaylunawat/Covid-19-Radiology"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
+    <a href="https://raw.githubusercontent.com/udaylunawat/Covid-19-Radiology/master/notebooks/COVID_19.ipynb"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
   </td>
 </table>
 
