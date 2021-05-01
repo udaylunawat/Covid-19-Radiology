@@ -10,7 +10,8 @@
 
   <h4 align="center">
   <p align="center">
-    Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning
+    Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning.
+      Note:- The project has been kept on hold as I felt it was not having a positive impact on my personal mental health.
     </h4>
   </p>
 </p>
@@ -33,7 +34,7 @@
 
 
 ## Motivation
-- The project was primarily made to tackle a myth - "Deep Learning is only useful for Big Data".
+- Keeping track of the Pandemic data, from a personal viewpoint.
 
 ## Instructions
 
