@@ -1,16 +1,16 @@
-[![Contributors][contributors-shield]][contributors-url] 
+<!-- [![Contributors][contributors-shield]][contributors-url] 
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![Apache License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 
   <h2 align="center">Covid-19 Radiology</h>
 
   <h4 align="center">
   <p align="center">
-    Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning.
+    Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning.</br>
       Note:- The project has been kept on hold as I felt it was not having a positive impact on my personal mental health.
     </h4>
   </p>
@@ -35,6 +35,7 @@
 
 ## Motivation
 - Keeping track of the Pandemic data, from a personal viewpoint.
+- Experimenting with Radiology data & Coronal X-ray images.
 
 ## Instructions
 <table class="tfo-notebook-buttons" align="left">
@@ -164,26 +165,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Credits
-- 
-
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
 
 <p align="center"> Made with :blue_heart: for India
 
-[contributors-shield]: https://img.shields.io/github/contributors/udaylunawat/Automatic-License-Plate-Recognition.svg?style=flat-square
-[contributors-url]: https://github.com/udaylunawat/Automatic-License-Plate-Recognition/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/udaylunawat/Covid-19-Radiology.svg?style=flat-square
+[contributors-url]: https://github.com/udaylunawat/Covid-19-Radiology/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/udaylunawat/Automatic-License-Plate-Recognition.svg?style=flat-square
-[forks-url]: https://github.com/udaylunawat/Automatic-License-Plate-Recognition/network/members
+[forks-shield]: https://img.shields.io/github/forks/udaylunawat/Covid-19-Radiology.svg?style=flat-square
+[forks-url]: https://github.com/udaylunawat/Covid-19-Radiology/network/members
 
-[stars-shield]: https://img.shields.io/github/stars/udaylunawat/Automatic-License-Plate-Recognition.svg?style=flat-square
-[stars-url]: https://github.com/udaylunawat/Automatic-License-Plate-Recognition/stargazers
+[stars-shield]: https://img.shields.io/github/stars/udaylunawat/Covid-19-Radiology.svg?style=flat-square
+[stars-url]: https://github.com/udaylunawat/Covid-19-Radiology/stargazers
 
-[issues-shield]: https://img.shields.io/github/issues/udaylunawat/Automatic-License-Plate-Recognition.svg?style=flat-square
-[issues-url]: https://github.com/udaylunawat/Automatic-License-Plate-Recognition/issues
+[issues-shield]: https://img.shields.io/github/issues/udaylunawat/Covid-19-Radiology.svg?style=flat-square
+[issues-url]: https://github.com/udaylunawat/Covid-19-Radiology/issues
 
-[license-shield]: https://img.shields.io/github/license/udaylunawat/Automatic-License-Plate-Recognition.svg?style=flat-square
-[license-url]: https://github.com/udaylunawat/Automatic-License-Plate-Recognition/blob/master/LICENSE
+[license-shield]: https://img.shields.io/github/license/udaylunawat/Covid-19-Radiology.svg?style=flat-square
+[license-url]: https://github.com/udaylunawat/Covid-19-Radiology/blob/master/LICENSE
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/uday-lunawat
