@@ -26,10 +26,13 @@ requirements:
 	$(PYTHON_INTERPRETER) -m pip install pip setuptools wheel --progress-bar off
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
-## Make Dataset
+## Run the full Data Pipeline ETL Process
 ETL: kaggle_setup requirements data model_download
-kaggle_setup: kaggle
+
+## Generate data directory structure & download and extract data from kaggle.
 data: directory_setup ct_scans_download
+
+## Train Model
 train: train_model
 
 directory_setup:
@@ -40,12 +43,13 @@ ct_scans_download:
 	unzip data/1_external/covid19-radiography-database.zip -d data/0_raw/
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py
 
-kaggle:
+kaggle_setup:
 	mkdir -p ~/.kaggle
 	cp kaggle.json ~/.kaggle/
 	ls ~/.kaggle
 	chmod 600 ~/.kaggle/kaggle.json
 
+## Download model h5 file. (Saved in output/models/inference)
 model_download:
 	wget -c $(MODEL) -O output/models/inference/base_model_covid.h5 -q --show-progress
 
