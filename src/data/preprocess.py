@@ -18,16 +18,16 @@ def covid_stats(res, timezone):
     country_wise : Latest Country wise covid-19 data with country name, cases, deaths and deaths per million population.
     update: date and time (GMT +0) when data was generated on rapidapi.
     '''
-    data = json.loads(res.text) 
+    data = json.loads(res.text)
 
-    country_wise = pd.DataFrame(data['countries_stat'])
+    country_wise = pd.DataFrame(data['data']['covid19Stats'])
     country_wise = country_wise.replace('', np.nan).fillna(0)
-    country_wise = country_wise[['country_name','cases','deaths','deaths_per_1m_population']]
-    country_wise['cases'] = country_wise['cases'].str.replace(',', '').astype(int)
-    country_wise['deaths'] = country_wise['deaths'].str.replace(',', '').astype(int)
-    country_wise['deaths_per_1m_population'] = country_wise['deaths_per_1m_population'].str.replace(',', '').astype(float)
-    country_wise = country_wise.astype({'cases': 'int', 'deaths': 'int', 'deaths_per_1m_population':'float64'})
-    updated_at = data['statistic_taken_at']
+    country_wise = country_wise[['country','confirmed','deaths']]
+    country_wise['country'] = country_wise['country'].str.replace(',', '').astype(str)
+    # country_wise['deaths'] = country_wise['deaths'].str.replace(',', '').astype(int)
+    # country_wise['confirmed'] = country_wise['confirmed'].str.replace(',', '').astype(int)
+    country_wise = country_wise.astype({'confirmed': 'int', 'deaths': 'int', 'country':'str'})
+    updated_at = data['lastUpdate'][0]
     updated_datetime = change_timezone(updated_at, timezone)
     return country_wise, updated_datetime
 
