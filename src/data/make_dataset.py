@@ -48,15 +48,17 @@ def live_data(key):
     -------
     response: A dictionary containing data in json format.
     """
-    # https://rapidapi.com/astsiatsko/api/coronavirus-monitor
-    url = "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php"
+    # https://rapidapi.com/KishCom/api/covid-19-coronavirus-statistics/
+    url = "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats"
+
+    querystring = {"country":"Canada"}
 
     headers = {
-        'x-rapidapi-host': "coronavirus-monitor.p.rapidapi.com",
-        'x-rapidapi-key': key
-        }
+        "X-RapidAPI-Key": key,
+        "X-RapidAPI-Host": "covid-19-coronavirus-statistics.p.rapidapi.com"
+    }
 
-    response = requests.request("GET", url, headers=headers)
+    response = requests.request("GET", url, headers=headers, params=querystring)
     return response
 
 if __name__ == '__main__':
