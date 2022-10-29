@@ -11,7 +11,6 @@
   <h4 align="center">
   <p align="center">
     Detects Covid-19 and Pneumonia using Coronal Xray images & Deep Learning.</br>
-      Note:- The project has been kept on hold as I felt it was not having a positive impact on my personal mental health.
     </h4>
   </p>
 </p>
