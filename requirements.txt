@@ -7,6 +7,6 @@ tensorflow
 seaborn
 pyngrok
 sklearn
-streamlit-nightly
+streamlit
 kaleido
-plotly==4.10.0
+plotly
