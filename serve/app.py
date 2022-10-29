@@ -11,8 +11,7 @@
 
 # streamlit configurations and options
 import streamlit as st
-from streamlit import caching
-st.beta_set_page_config(page_title="Covid-19 Classification", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Covid-19 Classification", page_icon="😎", layout="centered", initial_sidebar_state="expanded")
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 from os import listdir
@@ -67,7 +66,7 @@ def image_from_url(url):
     return image
 
 # setting load_model as cached to ensure model only loads once.
-# # Allowed mutation to avoid error. 
+# # Allowed mutation to avoid error.
 @st.cache(suppress_st_warning=True, allow_output_mutation=True, show_spinner=False)
 def keras_load_model(model_path):
     model = load_model(model_path)
@@ -78,7 +77,7 @@ def keras_load_model(model_path):
 response = live_data(rapid_api_key)
 data = pd.read_csv(PROCESSED_DATA_PATH)
 
-# Load the history from the file 
+# Load the history from the file
 history = joblib.load('output/history.pkl')
 
 image = None, None
@@ -105,13 +104,13 @@ if choice == "Coronal X-ray Classifier":
     st.write("## Upload your own image")
 
     # placeholders
-    choose = st.empty() 
+    choose = st.empty()
     upload = st.empty()
     preview_text = st.empty()
     preview = st.empty()
     predictor = st.button("Make a Prediction 🔥")
     prediction = st.empty()
-    
+
     upload_options = ['Choose existing', 'Upload','URL']
 
     query_params = st.experimental_get_query_params()
@@ -123,9 +122,9 @@ if choice == "Coronal X-ray Classifier":
     activity = choose.selectbox("Choose existing sample or try your own:", upload_options, index=default)
 
     if activity:
-        # updating url based on set activity 
+        # updating url based on set activity
         st.experimental_set_query_params(activity=upload_options.index(activity))
-        
+
         if activity == 'Choose existing':
             selected_sample = upload.selectbox("Pick from existing samples", (list(sample_images_dict.keys())))
             IMAGE_PATH = sample_images_dict[selected_sample]
@@ -156,7 +155,7 @@ if choice == "Coronal X-ray Classifier":
             selected_sample, img_file_buffer = None, None
 
     if image:
-        
+
         preview_text.markdown("## Preview Of Selected Image! 👀")
         streamlit_preview_image(image)
 
@@ -169,7 +168,7 @@ if choice == "Coronal X-ray Classifier":
 #================================= Data visualization section =================================
 
 elif choice == "Data Visualization":
-    
+
     timezone = 'Asia/Kolkata'
     country_wise, updated_at = covid_stats(response, timezone)
     st.title("Country wise data")
@@ -185,7 +184,7 @@ elif choice == "Data Visualization":
 #================================= Performance metrics section =================================
 
 elif choice == "Performance Metrics":
-    
+
     labels = list(data['label'].value_counts().keys())
     label_counts = data['label'].value_counts().values
     st.write(counts_bar(labels, label_counts))
